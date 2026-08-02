@@ -43,3 +43,11 @@ Only the `storage` permission is requested by the extension, which is used to re
 ## Safety
 
 It is recommended to start the volume low and increase it gradually. A high volume boost can distort content that is already loud and could damage your hearing or speakers.
+
+
+
+## License
+
+Licensed under the [MIT License](LICENSE.md).
+
+This is an unofficial project and is not affiliated with or endorsed by Crunchyroll.
