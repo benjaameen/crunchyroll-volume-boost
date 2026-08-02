@@ -1,0 +1,33 @@
+{
+  "manifest_version": 3,
+  "name": "Crunchyroll Volume Boost",
+  "version": "1.0.2",
+  "description": "A browser extension that extends Crunchyroll's player volume control from 100% to 600%.",
+  "minimum_chrome_version": "111",
+  "permissions": [
+    "storage"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.crunchyroll.com/watch/*",
+        "https://crunchyroll.com/watch/*"
+      ],
+      "js": [
+        "page-audio.js"
+      ],
+      "run_at": "document_start",
+      "world": "MAIN"
+    },
+    {
+      "matches": [
+        "https://www.crunchyroll.com/watch/*",
+        "https://crunchyroll.com/watch/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}
