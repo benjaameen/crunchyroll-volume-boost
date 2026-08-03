@@ -10,8 +10,8 @@
   "content_scripts": [
     {
       "matches": [
-        "https://www.crunchyroll.com/watch/*",
-        "https://crunchyroll.com/watch/*"
+        "https://www.crunchyroll.com/*",
+        "https://crunchyroll.com/*"
       ],
       "js": [
         "page-audio.js"
@@ -21,8 +21,8 @@
     },
     {
       "matches": [
-        "https://www.crunchyroll.com/watch/*",
-        "https://crunchyroll.com/watch/*"
+        "https://www.crunchyroll.com/*",
+        "https://crunchyroll.com/*"
       ],
       "js": [
         "content.js"
