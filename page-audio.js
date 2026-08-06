@@ -21,6 +21,7 @@
   let activeVideo = null;
   let userHasInteracted = false;
   let scanPending = false;
+  let interactionTimer = 0;
 
   const graphs = new WeakMap();
   const failedVideos = new WeakSet();
@@ -229,7 +230,21 @@
   function registerUserInteraction() {
     userHasInteracted = true;
     scheduleScan();
-    applyVolume();
+  }
+
+  function applyAfterUserInteraction() {
+    registerUserInteraction();
+    window.clearTimeout(interactionTimer);
+    interactionTimer = window.setTimeout(() => {
+      interactionTimer = 0;
+      // Let Crunchyroll finish updating its native mute state first.
+      if (activeVideo?.muted || activeVideo?.volume === 0) {
+        emitState();
+        return;
+      }
+
+      applyVolume();
+    }, 0);
   }
 
   window.addEventListener(SET_VOLUME_EVENT, (event) => {
@@ -242,6 +257,14 @@
     passive: true
   });
   document.addEventListener("keydown", registerUserInteraction, {
+    capture: true,
+    passive: true
+  });
+  document.addEventListener("click", applyAfterUserInteraction, {
+    capture: true,
+    passive: true
+  });
+  document.addEventListener("keyup", applyAfterUserInteraction, {
     capture: true,
     passive: true
   });
