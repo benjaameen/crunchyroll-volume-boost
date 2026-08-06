@@ -21,6 +21,7 @@
   let activeVideo = null;
   let userHasInteracted = false;
   let scanPending = false;
+  let interactionTimer = 0;
 
   const graphs = new WeakMap();
   const failedVideos = new WeakSet();
@@ -162,12 +163,12 @@
       return;
     }
 
-    // native volume stays at 100% in the boosted range
-	// the web audio gain begins at 1, making the handoff at 100% continuous.
+    // Native volume stays at 100% in the boosted range.
+    // The Web Audio gain begins at 1, making the handoff at 100% continuous.
     video.volume = 1;
 
     if (!userHasInteracted) {
-      // browsers require a user gesture before a web audio graph can start
+      // Browsers require a user gesture before a Web Audio graph can start.
       emitState();
       return;
     }
@@ -229,7 +230,21 @@
   function registerUserInteraction() {
     userHasInteracted = true;
     scheduleScan();
-    applyVolume();
+  }
+
+  function applyAfterUserInteraction() {
+    registerUserInteraction();
+    window.clearTimeout(interactionTimer);
+    interactionTimer = window.setTimeout(() => {
+      interactionTimer = 0;
+      // Let Crunchyroll finish updating its native mute state first.
+      if (activeVideo?.muted || activeVideo?.volume === 0) {
+        emitState();
+        return;
+      }
+
+      applyVolume();
+    }, 0);
   }
 
   window.addEventListener(SET_VOLUME_EVENT, (event) => {
@@ -242,6 +257,14 @@
     passive: true
   });
   document.addEventListener("keydown", registerUserInteraction, {
+    capture: true,
+    passive: true
+  });
+  document.addEventListener("click", applyAfterUserInteraction, {
+    capture: true,
+    passive: true
+  });
+  document.addEventListener("keyup", applyAfterUserInteraction, {
     capture: true,
     passive: true
   });
