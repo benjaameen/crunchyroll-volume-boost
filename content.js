@@ -23,6 +23,7 @@
   let renderQueued = false;
   let saveTimer = 0;
 
+  // Track the current slider in each container to avoid duplicate listeners.
   const attachedSliders = new WeakMap();
 
   function clampPercent(value) {
@@ -34,8 +35,8 @@
     return Math.min(MAX_PERCENT, Math.max(0, Math.round(number)));
   }
 
-  // preserve fine control for native volume
-  // top third of slider for the boosted volume.
+  // Preserve fine control for native volume
+  // Top third of slider for the boosted volume.
   function rangeValueToPercent(value) {
     const rangeValue = Math.min(RANGE_MAX, Math.max(0, Number(value) || 0));
     if (rangeValue <= NATIVE_LIMIT) {
@@ -54,6 +55,7 @@
   }
 
   function dispatchVolume(userInitiated) {
+    // Send volume changes
     window.dispatchEvent(new CustomEvent(SET_VOLUME_EVENT, {
       detail: {
         percent: desiredPercent,
@@ -83,6 +85,7 @@
   }
 
   function stopCrunchyrollRangeHandler(event) {
+    // Prevent Crunchyroll from overwriting the extended range.
     event.stopImmediatePropagation();
     event.stopPropagation();
   }
@@ -205,6 +208,7 @@
     scheduleRender();
   });
 
+  // Reattach when Crunchyroll rebuilds the player controls after SPA navigation.
   new MutationObserver(scheduleScan).observe(document, {
     childList: true,
     subtree: true
