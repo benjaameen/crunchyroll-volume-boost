@@ -1,53 +1,25 @@
 # Crunchyroll Volume Boost
 
-A Manifest V3 browser extension that extends Crunchyroll's player volume control from 100% to 600%.
+[![Chrome Web Store Version](https://img.shields.io/chrome-web-store/v/oclddngmeoaehncbbejecggpnbgcnopi?logo=googlechrome&logoColor=white&label=Chrome%20Web%20Store&color=orange)](https://chromewebstore.google.com/detail/oclddngmeoaehncbbejecggpnbgcnopi)
 
-The extension preserves Crunchyroll's original volume slider looks and functionality, only increasing the limit of the volume. It doesn't make any network requests nor collect any data.
+A browser extension that extends Crunchyroll's player volume control from 100% to 600%.
 
-
-
-## Installation
-
-1. Download or clone this repository.
-2. Open your browser's extensions page:
-
-   * Chrome: `chrome://extensions`
-   * Edge: `edge://extensions`
-   * Brave: `brave://extensions`
-3. Enable **Developer mode**.
-4. Select **Load unpacked**.
-5. Select the downloaded repository's folder.
-6. Reload any open Crunchyroll watch page.
-
-Now you can hover over the normal speaker button and slide the volume past 100%. Your new selected volume is saved locally
-
-
-
-## Controls
-
-* Arrow keys adjust volume in 5% steps below 100%, then 10% steps above it.
-* Page Up and Page Down now increment in 50% steps.
-* Home and End changes volume to 0% and 600% respectively instead of the previous 0% and 100%.
-* The dragging continues to work seamlessly and the mute restores the correct audio level.
-
-
+<img src="assets/extension-before-after.png" width="640">
 
 ## How it works
 
-Below 100%, the extension uses the content's normal volume. Above 100%, it applies Web Audio gain to the native volume. A dynamics compressor is then enabled in the boosted range to soften any clipping.
+Integrates directly with the existing volume control rather than an entirely separate one, using the top third of the slider to go from 100% to 600%.
 
-Only the `storage` permission is requested by the extension, which is used to remember the selected volume percentage.
+From 0% to 100%, the player behaves normally. Above 100%, the extension uses the Web Audio API to apply additional amplification. The extension also applies dynamic range compression to reduce clipping and harsh distortion.
 
-
-
-## Safety
-
-It is recommended to start the volume low and increase it gradually. A high volume boost can distort content that is already loud and could damage your hearing or speakers.
-
-
+Only your selected volume is saved locally, so you don't have to reapply it between episodes or binge sessions. No data is sent to the developer or any third party. See the [Privacy Policy](PRIVACY.md) for details.
 
 ## License
 
 Licensed under the [MIT License](LICENSE.md).
 
 This is an unofficial project and is not affiliated with or endorsed by Crunchyroll.
+
+## Credits
+
+This project was partially coded and refactored with the help of generative AI (OpenAI's GPT-5.6)
